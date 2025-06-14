@@ -8,9 +8,9 @@
 class daKmon_c : public fopAc_ac_c {
 public:
     inline cPhs_State _create();
-    inline bool _delete();
-    inline bool _draw();
-    inline bool _execute();
+    inline BOOL _delete();
+    inline BOOL _draw();
+    inline BOOL _execute();
 
     void set_mtx();
     void CreateHeap();
@@ -19,15 +19,16 @@ public:
 
 public:
     /* Place member variables here */
-    /* 0x290 */ int field_0x290;
-    /* 0x294 */ int field_0x294;
+    /* 0x290 */ request_of_phase_process_class field_0x290;
     /* 0x298 */ J3DModel* model;
-    /* 0x29C */ mDoExt_btkAnm field_0x29C;
-    /* 0x2B0 */ mDoExt_bckAnm field_0x2B0;
+    /* 0x29C */ mDoExt_btkAnm btkAnm;
+    /* 0x2B0 */ mDoExt_bckAnm bckAnm;
     /* 0x2C0 */ dBgS_Acch field_0x2C0;
     /* 0x484 */ dBgS_AcchCir field_0x484;
     /* 0x4C4 */ fopAc_ac_c* field_0x4C4;
     // Size: 0x4C8
+
+    static const char m_arcname[];
 };
 
 #endif /* D_A_KMON_H */

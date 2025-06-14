@@ -9,6 +9,35 @@
 #include "d/d_com_inf_game.h"
 #include "f_op/f_op_actor_mng.h"
 
+const char daKmon_c::m_arcname[] = "Always";
+
+BOOL daKmon_c::_delete() {
+    dComIfG_resDelete(&field_0x290, m_arcname);
+    return TRUE;
+}
+
+BOOL daKmon_c::_draw() {
+    g_env_light.settingTevStruct(TEV_TYPE_BG1_PLIGHT, &current.pos, &tevStr);
+    g_env_light.setLightTevColorType(model, &tevStr);
+
+    bckAnm.entry(model->getModelData());
+    btkAnm.entry(model->getModelData());
+    mDoExt_modelUpdateDL(model);
+
+    return TRUE;
+}
+
+BOOL daKmon_c::_execute() {
+    checkTalk();
+    fopAcM_posMoveF(this, 0);
+    field_0x2C0.CrrPos(*dComIfG_Bgsp());
+    bckAnm.play();
+    btkAnm.play();
+    set_mtx();
+
+    return FALSE;
+}
+
 /* 00000078-00000118       .text set_mtx__8daKmon_cFv */
 void daKmon_c::set_mtx() {
     /* Nonmatching */
@@ -40,27 +69,18 @@ static s32 daKmonCreate(void*) {
 }
 
 /* 00000968-00000998       .text daKmonDelete__FPv */
-static BOOL daKmonDelete(void*) {
-    /* Nonmatching */
+static BOOL daKmonDelete(void* obj) {
+    return ((daKmon_c*)obj)->_delete();
 }
 
 /* 00000998-00000A00       .text daKmonExecute__FPv */
 static BOOL daKmonExecute(void* obj) {
-    daKmon_c* kmon = (daKmon_c*)obj;
-
-    kmon->checkTalk();
-    fopAcM_posMoveF(kmon, 0);
-    kmon->field_0x2C0.CrrPos(*dComIfG_Bgsp());
-    kmon->field_0x2B0.play();
-    kmon->field_0x29C.play();
-    kmon->set_mtx();
-
-    return FALSE;
+    return ((daKmon_c*)obj)->_execute();
 }
 
 /* 00000A00-00000A9C       .text daKmonDraw__FPv */
-static BOOL daKmonDraw(void*) {
-    /* Nonmatching */
+static BOOL daKmonDraw(void* obj) {
+    return ((daKmon_c*)obj)->_draw();
 }
 
 /* 00000A9C-00000AA4       .text daKmonIsDelete__FPv */
