@@ -6,6 +6,8 @@
 #include "d/actor/d_a_kmon.h"
 #include "d/d_procname.h"
 #include "d/d_priority.h"
+#include "d/d_com_inf_game.h"
+#include "f_op/f_op_actor_mng.h"
 
 /* 00000078-00000118       .text set_mtx__8daKmon_cFv */
 void daKmon_c::set_mtx() {
@@ -13,8 +15,8 @@ void daKmon_c::set_mtx() {
 }
 
 /* 00000118-00000138       .text CheckCreateHeap__FP10fopAc_ac_c */
-static BOOL CheckCreateHeap(fopAc_ac_c*) {
-    /* Nonmatching */
+static void CheckCreateHeap(fopAc_ac_c* obj) {
+    ((daKmon_c*)obj)->CreateHeap();
 }
 
 /* 00000138-00000324       .text CreateHeap__8daKmon_cFv */
@@ -43,8 +45,17 @@ static BOOL daKmonDelete(void*) {
 }
 
 /* 00000998-00000A00       .text daKmonExecute__FPv */
-static BOOL daKmonExecute(void*) {
-    /* Nonmatching */
+static BOOL daKmonExecute(void* obj) {
+    daKmon_c* kmon = (daKmon_c*)obj;
+
+    kmon->checkTalk();
+    fopAcM_posMoveF(kmon, 0);
+    kmon->field_0x2C0.CrrPos(*dComIfG_Bgsp());
+    kmon->field_0x2B0.play();
+    kmon->field_0x29C.play();
+    kmon->set_mtx();
+
+    return FALSE;
 }
 
 /* 00000A00-00000A9C       .text daKmonDraw__FPv */
